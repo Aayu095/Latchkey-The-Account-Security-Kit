@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latchkey — The Account Security Kit · Live Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F4EC;--ink:#111111;--red:#E2001A}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Inter,Arial,sans-serif;background:var(--paper);color:var(--ink)}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .hero{padding:72px 24px 56px;text-align:center;border-bottom:3px solid var(--ink)}
+  .eyebrow{letter-spacing:.35em;font-size:11px;font-weight:600;color:var(--red);text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  h1{font-family:Archivo,Inter,sans-serif;font-weight:900;font-size:clamp(38px,6vw,68px);line-height:1.02;letter-spacing:-.01em;text-transform:uppercase;margin:18px auto 14px;max-width:880px}
+  h1 em{color:var(--red);font-style:normal}
+  .sub{max-width:660px;margin:0 auto;font-size:17px;line-height:1.6}
+  .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .chip{border:2px solid var(--ink);padding:8px 16px;font-size:13px;font-weight:600;font-family:"JetBrains Mono",monospace}
+  .chip.solid{background:var(--red);border-color:var(--red);color:var(--paper)}
+  .wrap{max-width:1120px;margin:0 auto;padding:52px 24px 24px}
+
+  .viewer{background:var(--paper);border:2px solid var(--ink);overflow:hidden}
+  .viewer-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:2px solid var(--ink);flex-wrap:wrap}
+  .dots{display:flex;gap:7px;flex:none}
+  .dots span{width:11px;height:11px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .tab{appearance:none;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font:600 13.5px Inter,Arial,sans-serif;padding:9px 16px;cursor:pointer}
+  .tab:hover{border-color:var(--red);color:var(--red)}
+  .tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .fullscreen{font:700 13.5px Inter,Arial,sans-serif;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .fullscreen:hover{color:var(--red);text-decoration:underline}
+  .stage{height:min(76vh,780px);background:var(--paper);position:relative}
+  .stage iframe{width:100%;height:100%;border:0;display:block;background:var(--paper)}
+  .stage .poster-wrap{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:var(--paper);padding:26px}
+  .stage .poster-wrap img{max-height:100%;max-width:100%;border:2px solid var(--ink)}
+  .stage.poster iframe{display:none}
+  .stage.poster .poster-wrap{display:flex}
+  .viewer-cap{padding:14px 20px 16px;font-size:13.5px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:2px solid var(--ink)}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:26px}
+  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--paper);border:2px solid var(--ink);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%}
+  .card:hover{border-color:var(--red)}
+  .thumb{aspect-ratio:16/9;overflow:hidden;background:var(--paper);flex:none;border-bottom:2px solid var(--ink)}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+  .thumb.poster img{object-fit:contain;object-position:center}
+  .cbody{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+  .tag{font-size:11px;font-weight:600;letter-spacing:.25em;color:var(--red);text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .cbody h2{font-family:Archivo,Inter,sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;margin:8px 0 8px}
+  .cbody p{font-size:14.5px;line-height:1.6}
+  .open{margin-top:auto;padding-top:16px;font-weight:700;font-size:14px}
+
+  .band{border:2px solid var(--ink);padding:38px;margin:26px 0}
+  .band h3{font-family:Archivo,Inter,sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;margin-bottom:10px}
+  .band h3 em{color:var(--red);font-style:normal}
+  .band p{line-height:1.65;font-size:15.5px;max-width:800px}
+  .band code{border:1.5px solid var(--ink);padding:2px 7px;font-size:13.5px;font-family:"JetBrains Mono",monospace}
+  footer{text-align:center;padding:26px 24px 44px;font-size:13px;line-height:1.7;border-top:3px solid var(--ink);margin-top:26px}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="eyebrow">Hyper Elements Template Challenge</div>
+    <h1>Latchkey — every sign-in, <em>accounted for</em></h1>
+    <p class="sub">One fictional account's bad night becomes four finished templates: a suspicious sign-in email, a security-center page, a two-page incident-report PDF, and a recovery card. The risk score — and the impossible-travel verdict behind it — is computed from the sign-in record, never typed in.</p>
+    <div class="chips">
+      <span class="chip solid">0 errors · 0 warnings</span>
+      <span class="chip">Email · Page · Document · Canvas</span>
+      <span class="chip">7 email-client previews</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="viewer" aria-label="Live template viewer">
+      <div class="viewer-bar">
+        <div class="dots" aria-hidden="true">
+          <span style="background:#111111"></span><span style="background:#E2001A"></span><span style="background:#111111"></span>
+        </div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-view="page" role="tab">Security center</button>
+          <button class="tab" data-view="email" role="tab">Sign-in alert</button>
+          <button class="tab" data-view="report" role="tab">Incident report</button>
+          <button class="tab" data-view="poster" role="tab">Recovery card</button>
+        </div>
+        <a class="fullscreen" id="fullscreenLink" href="security-center.html" target="_blank" rel="noopener">Open full screen ↗</a>
+      </div>
+      <div class="stage" id="stage">
+        <iframe id="stageFrame" src="security-center.html" title="Template preview" loading="eager"></iframe>
+        <div class="poster-wrap"><img src="poster.png" alt="Latchkey recovery card, 1080 by 1350"></div>
+      </div>
+      <div class="viewer-cap">
+        <span id="capText"><strong>Page · 1120px</strong> — the security center, rendered live from the template.</span>
+        <span>Rendered with Hyper Elements · one account record in <span class="mono">src/data.ts</span></span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <a class="card" href="security-center.html">
+        <div class="thumb"><img src="thumb-page.png" alt="Latchkey security center page"></div>
+        <div class="cbody"><div class="tag">Page · 1120px</div><h2>Security center</h2><p>The showpiece: a bulletin in five numbered sections — the alert, a flat dot-matrix route map with the red Bengaluru → Lagos arc, the full sign-in record as ruled rows with big risk numerals, sessions, and the recovery protocol.</p><div class="open">Open the page →</div></div>
+      </a>
+      <a class="card" href="security-alert.html">
+        <div class="thumb"><img src="thumb-email.png" alt="Latchkey suspicious sign-in email"></div>
+        <div class="cbody"><div class="tag">Email · 600px</div><h2>Suspicious sign-in alert</h2><p>The bulletin in email-safe tables: masthead, huge headline, the ruled event record with a flat segmented meter, the red impossible-travel verdict band, the stamp, and two square buttons: "No — secure my account" and "Yes, it was me".</p><div class="open">Open the email →</div></div>
+      </a>
+      <a class="card" href="incident-report.pdf">
+        <div class="thumb"><img src="thumb-incident.png" alt="Latchkey incident report, page 1"></div>
+        <div class="cbody"><div class="tag">Document · A4 PDF, 2 pages</div><h2>Incident report</h2><p>The full record: the flat route map and verdict on page 1, then the event log, the travel computation, and page 2 — "the arithmetic, in full" — every signal, weight and point that produces the score, with real page numbers.</p><div class="open">Open the PDF →</div></div>
+      </a>
+      <a class="card" href="poster.png">
+        <div class="thumb poster"><img src="poster.png" alt="Latchkey recovery card"></div>
+        <div class="cbody"><div class="tag">Canvas · 1080 × 1350</div><h2>Recovery card</h2><p>The bulletin as a poster: masthead, the huge headline, the flat route map with its red arc, the giant 80 with ruled factor rows, and the next three recovery steps with computed progress.</p><div class="open">Open the card →</div></div>
+      </a>
+    </div>
+
+    <div class="band">
+      <h3>One record in, <em>every screen</em> out</h3>
+      <p>Change an event in <code>src/data.ts</code> — a city, an hour, a device — and all four templates re-derive themselves: signal weights fire or don't, the haversine travel check runs again, and the score, verdict, stamps and checklist update everywhere. In the sample night, a Lagos sign-in 41 minutes after a Bengaluru one demands <code>11,913 km/h</code> — so the kit says what a good security team would: it wasn't you travelling; it was your password, somewhere it should never have been.</p>
+    </div>
+  </main>
+
+  <footer>
+    Latchkey is fictional. Sample data — all names, devices, IP addresses and events are invented; IPs use documentation ranges.<br>
+    Built with Hyper Elements · Archivo, Inter &amp; JetBrains Mono (SIL OFL)
+  </footer>
+
+<script>
+  var views = {
+    page:   { src: 'security-center.html', cap: '<strong>Page · 1120px</strong> — the security center, rendered live from the template.' },
+    email:  { src: 'security-alert.html',  cap: '<strong>Email · 600px</strong> — the suspicious sign-in alert, rendered live from the template.' },
+    report: { src: 'incident-report.pdf',  cap: '<strong>Document · A4 PDF, 2 pages</strong> — the incident report, rendered live from the template.' },
+    poster: { src: 'poster.png',           cap: '<strong>Canvas · 1080 × 1350</strong> — the recovery card, rendered live from the template.' }
+  };
+  var stage = document.getElementById('stage');
+  var frame = document.getElementById('stageFrame');
+  var cap = document.getElementById('capText');
+  var full = document.getElementById('fullscreenLink');
+  document.querySelectorAll('.tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var v = views[btn.dataset.view];
+      stage.classList.toggle('poster', btn.dataset.view === 'poster');
+      if (btn.dataset.view !== 'poster') frame.src = v.src;
+      full.href = v.src;
+      cap.innerHTML = v.cap;
+    });
+  });
+</script>
+</body>
+</html>
